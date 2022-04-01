@@ -8,13 +8,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Store List</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+	<title>Store List</title>
 </head>
-<body>
-	<a href="">index</a>
+<body class="container">
 	<h1>Store List</h1>
-	<table border="1">
+	<a href="<%=request.getContextPath()%>/index.jsp" >index</a>
+	<table class="table table-bordered">
 		<thead>
 			<tr>
 				<th>storeId</th>
