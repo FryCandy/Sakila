@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
-<%@ page import ="dao.ActorInfoDao" %>
-<%@ page import ="vo.ActorInfo" %>
+<%@ page import ="dao.CustomerListDao" %>
+<%@ page import ="vo.CustomerList" %>
 <%@ page import ="java.util.*" %>
 <%
-	request.setCharacterEncoding("UTF-8");//인코딩
-	//변수 선언 및 요청 값 받기
+//변수 선언 및 요청 값 받기
 	int currentPage = 1; // 현재 페이지 초기 값 1
 	if(request.getParameter("currentPage")!=null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -18,41 +17,48 @@
 	int beginRow = (currentPage-1)*rowPerPage; //Page 처음 행의 값 연산식
 		System.out.println(beginRow+"beginRow");
 	int minPage = 1;
-		if(request.getParameter("minPage")!= null){
-			minPage = Integer.parseInt(request.getParameter("minPage"));
-			currentPage=minPage;
+		if(request.getParameter("msinPage")!= null){
+	minPage = Integer.parseInt(request.getParameter("minPage"));
+	currentPage=minPage;
 		}else{
-			minPage = (currentPage-1)/10*10+1;//페이징에 표시 될 가장 작은 페이지숫자 :일의 자리수는 1이고, 십이상의 자리수는 currentPage와 동일한 minPage
+	minPage = (currentPage-1)/10*10+1;//페이징에 표시 될 가장 작은 페이지숫자 :일의 자리수는 1이고, 십이상의 자리수는 currentPage와 동일한 minPage
 		}
 		System.out.println(minPage+"<--minPage");
 	int totalRow =0; //전체행 변수 초기화
 	int lastPage = 0; //마지막 페이지 변수 초기화
+	String name = ""; //배우 이름 검색
+	if(request.getParameter("name")!=null){
+		name = request.getParameter("name");
+		System.out.println(name+"<--name");
+	}
 	
 	//ActorInfoDao 호출
-	List<ActorInfo> list = new ArrayList<ActorInfo>();
-	ActorInfoDao actorInforDao = new ActorInfoDao();
+	List<CustomerList> list = new ArrayList<CustomerList>();
+	CustomerListDao customerListDao = new CustomerListDao();
 	//검색전 list 호출
-	list = actorInforDao.selectActorInfoListByPage(beginRow, rowPerPage);
-	totalRow = actorInforDao.totalRow();
+	list = customerListDao.selectCustomerListByPage(beginRow, rowPerPage);
+	totalRow = customerListDao.totalRow();
 	System.out.println(totalRow+"<-totalRow");
 	//검색기능
-	String search ="배우이름"; //검색 카테고리 기본값 배우이름 
-	if(request.getParameter("search")!=null){
-		search = request.getParameter("search");
-		System.out.println(search+"<--search");
-	}
-	String keyword = ""; //검색내용 변수 초기화
-	if(request.getParameter("keyword")!=null){
-		keyword = request.getParameter("keyword");
-		System.out.println(keyword+"<--keyword");
-	}
-	//배우이름검색시 리스트
-	if(search.equals("배우이름")&&!keyword.equals("")){
-		list = actorInforDao.searchActorInfoListByName(keyword, beginRow, rowPerPage);
-	//영화정보검색시 리스트
-	}else if(search.equals("영화정보")&&!keyword.equals("")){
-		list = actorInforDao.searchActorInfoListByfilmInfo(keyword, beginRow, rowPerPage);
-	}
+		String search ="name"; //검색 카테고리 기본값 name 
+		if(request.getParameter("search")!=null){
+			search = request.getParameter("search");
+			System.out.println(search+"<--search");
+		}
+		String keyword = ""; //검색내용 변수 초기화
+		if(request.getParameter("keyword")!=null){
+			keyword = request.getParameter("keyword");
+			System.out.println(keyword+"<--keyword");
+		}
+		//배우이름검색시 리스트
+		if(search.equals("name")&&!keyword.equals("")){
+			list = customerListDao.searchCustomerListByname(keyword, beginRow, rowPerPage);
+		//영화정보검색시 리스트
+		}else if(search.equals("city")&&!keyword.equals("")){
+			list = customerListDao.searchCustomerListByCity(keyword, beginRow, rowPerPage) ;
+		}else if(search.equals("country")&&!keyword.equals("")){
+			list = customerListDao.searchCustomerListBycountry(keyword, beginRow, rowPerPage) ;
+		}
 	//연산식
 	lastPage = ((totalRow - 1) / rowPerPage + 1); //마지막 페이지를 구하는 연산식
 %>
@@ -61,42 +67,52 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-	<title>ActorInfoList</title>
+	<title>customerList</title>
 </head>
 <body class = "container">
-	<h1>ActorInfoList</h1>
+	<h1>customerList</h1>
 	<a href="<%=request.getContextPath()%>/index.jsp" >index</a>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>ActorId</th>
-				<th>firstName</th>
-				<th>lastName</th>
-				<th>filmInfo</th>
+				<th>ID</th>
+				<th>name</th>
+				<th>address</th>
+				<th>zipCode</th>
+				<th>phone</th>
+				<th>city</th>
+				<th>country</th>
+				<th>notes</th>
+				<th>SID</th>
 			</tr>
 		<tbody>
 				<%
-					for(ActorInfo a : list){
+				for( CustomerList c : list){
 				%>
 			<tr>
-				<td><%=a.getActorId()%></td>
-				<td><%=a.getFirstName()%></td>	
-				<td><%=a.getLastName()%></td>
-				<td><%=a.getFilmInfo()%></td>
+				<td><%=c.getID()%></td>
+				<td><%=c.getName()%></td>
+				<td><%=c.getAddress()%></td>
+				<td><%=c.getZipCode()%></td>
+				<td><%=c.getPhone()%></td>
+				<td><%=c.getCity()%></td>
+				<td><%=c.getCountry()%></td>
+				<td><%=c.getNotes()%></td>
+				<td><%=c.getSID()%></td>
 			</tr>
 				<%
 					}
-				
 				 %>
 		</tbody>
 	</table>
 	<!-- 현재 페이지에 정보를 갱신하는 from -->
-	<form method="post" action = "<%=request.getContextPath()%>/ActorInfoList.jsp" >
+	<form method="post" action = "<%=request.getContextPath()%>/customerList.jsp" >
 	<!-- 검색 기능 부분 -->
 	<div>
 		<select name ="search"  value = <%=search%>>
-			<option value ="배우이름">배우이름</option>
-			<option value ="영화정보">영화정보</option>
+			<option value ="name">name</option>
+			<option value ="city">city</option>
+			<option value ="country">country</option>
 		</select>
 	<input type = text name ="keyword">
 	<button type = "submit" class="btn btn-outline-info">검색</button>

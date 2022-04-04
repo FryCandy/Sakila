@@ -12,6 +12,14 @@ public class Staff {
 	private String username;
 	private String password;
 	private String lastUpdate;
+	
+	@Override
+	public String toString() {
+		return "Staff [staffId=" + staffId + ", firstName=" + firstName + ", lastName=" + lastName + ", addressId="
+				+ addressId + ", Picture=" + Picture + ", email=" + email + ", storeId=" + storeId + ", active="
+				+ active + ", username=" + username + ", password=" + password + ", lastUpdate=" + lastUpdate + "]";
+	}
+	
 	public int getStaffId() {
 		return staffId;
 	}

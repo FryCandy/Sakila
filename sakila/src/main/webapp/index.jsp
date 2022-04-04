@@ -12,7 +12,14 @@
 	<ol class="list-group">
 		<li><a href="<%=request.getContextPath() %>/storeList.jsp">storeList</a>
 		<li><a href="<%=request.getContextPath() %>/staffList.jsp">staffList</a>
+		<!-- view 7개 리스트 -->
 		<li><a href="<%=request.getContextPath() %>/ActorInfoList.jsp">ActorInforLIst</a>
+		<li><a href="<%=request.getContextPath() %>/customerList.jsp">customerList</a>
+		<li><a href="<%=request.getContextPath() %>/filmList.jsp">filmList</a>
+		<li><a href="<%=request.getContextPath() %>/nicerButSlowerFilmList.jsp">niceButSlowerFilmList</a>
+		<li><a href="<%=request.getContextPath() %>/salesByFilmCategory.jsp">salesByFilmCategory</a>
+		<li><a href="<%=request.getContextPath() %>/salesByStore.jsp">salesByStore</a>
+		<li><a href="<%=request.getContextPath() %>/staffListView.jsp">staffListView</a>
 	</ol>
 
 </body>

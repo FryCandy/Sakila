@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
-<%@ page import ="dao.ActorInfoDao" %>
-<%@ page import ="vo.ActorInfo" %>
+<%@ page import ="dao.FilmListDao" %>
+<%@ page import ="vo.FilmList" %>
 <%@ page import ="java.util.*" %>
 <%
-	request.setCharacterEncoding("UTF-8");//인코딩
 	//변수 선언 및 요청 값 받기
 	int currentPage = 1; // 현재 페이지 초기 값 1
 	if(request.getParameter("currentPage")!=null){
@@ -27,32 +26,19 @@
 		System.out.println(minPage+"<--minPage");
 	int totalRow =0; //전체행 변수 초기화
 	int lastPage = 0; //마지막 페이지 변수 초기화
+	String name = ""; //배우 이름 검색
+	if(request.getParameter("name")!=null){
+		name = request.getParameter("name");
+		System.out.println(name+"<--name");
+	}
 	
 	//ActorInfoDao 호출
-	List<ActorInfo> list = new ArrayList<ActorInfo>();
-	ActorInfoDao actorInforDao = new ActorInfoDao();
+	List<FilmList> list = new ArrayList<FilmList>();
+	FilmListDao filmListDao = new FilmListDao();
 	//검색전 list 호출
-	list = actorInforDao.selectActorInfoListByPage(beginRow, rowPerPage);
-	totalRow = actorInforDao.totalRow();
+	list =filmListDao.selectFilmListByPage(beginRow, rowPerPage);
+	totalRow = filmListDao.totalRow();
 	System.out.println(totalRow+"<-totalRow");
-	//검색기능
-	String search ="배우이름"; //검색 카테고리 기본값 배우이름 
-	if(request.getParameter("search")!=null){
-		search = request.getParameter("search");
-		System.out.println(search+"<--search");
-	}
-	String keyword = ""; //검색내용 변수 초기화
-	if(request.getParameter("keyword")!=null){
-		keyword = request.getParameter("keyword");
-		System.out.println(keyword+"<--keyword");
-	}
-	//배우이름검색시 리스트
-	if(search.equals("배우이름")&&!keyword.equals("")){
-		list = actorInforDao.searchActorInfoListByName(keyword, beginRow, rowPerPage);
-	//영화정보검색시 리스트
-	}else if(search.equals("영화정보")&&!keyword.equals("")){
-		list = actorInforDao.searchActorInfoListByfilmInfo(keyword, beginRow, rowPerPage);
-	}
 	//연산식
 	lastPage = ((totalRow - 1) / rowPerPage + 1); //마지막 페이지를 구하는 연산식
 %>
@@ -61,46 +47,46 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-	<title>ActorInfoList</title>
+	<title>FilmList</title>
 </head>
 <body class = "container">
-	<h1>ActorInfoList</h1>
+	<h1>FilmList</h1>
 	<a href="<%=request.getContextPath()%>/index.jsp" >index</a>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>ActorId</th>
-				<th>firstName</th>
-				<th>lastName</th>
-				<th>filmInfo</th>
+				<th>FID</th>
+				<th>title</th>
+				<th>description</th>
+				<th>category</th>
+				<th>price</th>
+				<th>length</th>
+				<th>rating</th>
+				<th>actors</th>
 			</tr>
 		<tbody>
 				<%
-					for(ActorInfo a : list){
+					for(FilmList f : list){
 				%>
 			<tr>
-				<td><%=a.getActorId()%></td>
-				<td><%=a.getFirstName()%></td>	
-				<td><%=a.getLastName()%></td>
-				<td><%=a.getFilmInfo()%></td>
+				<td><%=f.getFID()%></td>
+				<td><%=f.getTitle()%></td>
+				<td><%=f.getDescription()%></td>
+				<td><%=f.getCategory()%></td>
+				<td><%=f.getPrice()%></td>
+				<td><%=f.getLength()%></td>
+				<td><%=f.getRating()%></td>
+				<td><%=f.getActors()%></td>
 			</tr>
 				<%
 					}
-				
 				 %>
 		</tbody>
 	</table>
 	<!-- 현재 페이지에 정보를 갱신하는 from -->
-	<form method="post" action = "<%=request.getContextPath()%>/ActorInfoList.jsp" >
+	<form method="post" action = "<%=request.getContextPath()%>/filmList.jsp" >
 	<!-- 검색 기능 부분 -->
-	<div>
-		<select name ="search"  value = <%=search%>>
-			<option value ="배우이름">배우이름</option>
-			<option value ="영화정보">영화정보</option>
-		</select>
-	<input type = text name ="keyword">
-	<button type = "submit" class="btn btn-outline-info">검색</button>
-	</div>
+	<input type = text name ="name">
 	<!-- 페이지 목록 표시 부분 -->
 		<!-- 이전 목록 표시 -->
 		<%
