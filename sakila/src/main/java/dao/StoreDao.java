@@ -1,6 +1,5 @@
 package dao;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import util.DBUtil;
 public class StoreDao {
 		//ArrayList는 List 인터페이스의 구현체 중 하나이다.
 		//HashMap은 Map 인터페이스의 구현체 중 하나이다.
@@ -18,8 +19,7 @@ public class StoreDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {//예외 처리 
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/sakila","root","java1234");
+			conn = DBUtil.getConnection();// DBUtil 내에 DB연결 호출
 			/*
 				SELECT 
 					s1.store_id storeId,

@@ -1,6 +1,5 @@
 package dao;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import util.DBUtil;
 public class StaffDao {
 	public List <Map<String,Object>> selectStaffList(){
 		List <Map<String,Object>> list = new ArrayList<>();
@@ -16,8 +17,7 @@ public class StaffDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {//예외 처리
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/sakila","root","java1234");
+			conn = DBUtil.getConnection();// DBUtil 내에 DB연결 호출
 			String sql ="SELECT  "
 					+ "	st1.staff_id staffId, "
 					+ "	concat(st1.first_name,' ',st1.last_name) staffName, "
