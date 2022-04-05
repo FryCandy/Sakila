@@ -113,43 +113,5 @@ public class ActorInfoDao {
 		}
 	}
 	return list;
-}
-	//영화정보검색기능메서드
-	public List<ActorInfo> searchActorInfoListByfilmInfo(String filmInfo,int beginRow, int rowPerPage){
-		List<ActorInfo> list = new ArrayList<>();
-		//DB 자원 준비
-		Connection conn =null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		conn = DBUtil.getConnection(); // DBUtil 내에 DB연결 호출
-		String sql = "select actor_id actorId, first_name firstName, last_name lastName, film_info filmInfo  from actor_info WHERE film_info like ?  order By actor_id limit ?,?";
-		try {
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, "%"+filmInfo+"%");
-			stmt.setInt(2, beginRow);
-			stmt.setInt(3, rowPerPage);
-			rs = stmt.executeQuery();
-			while(rs.next()) {
-				ActorInfo a = new ActorInfo();
-				
-				
-				a.setActorId(rs.getInt("actorId"));
-				a.setFirstName(rs.getString("firstName"));
-				a.setLastName(rs.getString("lastName"));
-				a.setFilmInfo(rs.getString("filmInfo"));
-				list.add(a);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				rs.close();
-				stmt.close();
-				conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return list;
 	}
 }

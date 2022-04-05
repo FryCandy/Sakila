@@ -35,23 +35,15 @@
 	list = actorInforDao.selectActorInfoListByPage(beginRow, rowPerPage);
 	totalRow = actorInforDao.totalRow();
 	System.out.println(totalRow+"<-totalRow");
-	//검색기능
-	String search ="배우이름"; //검색 카테고리 기본값 배우이름 
-	if(request.getParameter("search")!=null){
-		search = request.getParameter("search");
-		System.out.println(search+"<--search");
-	}
-	String keyword = ""; //검색내용 변수 초기화
-	if(request.getParameter("keyword")!=null){
-		keyword = request.getParameter("keyword");
-		System.out.println(keyword+"<--keyword");
+	//검색기능 -actorInfo table는 배우이름만 검색, film_info는 다중값이라 원자성이 없으므로, 검색하기엔 좋지않다.
+	String name = ""; //검색내용 변수 초기화
+	if(request.getParameter("name")!=null){
+		name = request.getParameter("name");
+		System.out.println(name+"<--name");
 	}
 	//배우이름검색시 리스트
-	if(search.equals("배우이름")&&!keyword.equals("")){
-		list = actorInforDao.searchActorInfoListByName(keyword, beginRow, rowPerPage);
-	//영화정보검색시 리스트
-	}else if(search.equals("영화정보")&&!keyword.equals("")){
-		list = actorInforDao.searchActorInfoListByfilmInfo(keyword, beginRow, rowPerPage);
+	if(!name.equals("")){
+		list = actorInforDao.searchActorInfoListByName(name, beginRow, rowPerPage);
 	}
 	//연산식
 	lastPage = ((totalRow - 1) / rowPerPage + 1); //마지막 페이지를 구하는 연산식
@@ -94,11 +86,8 @@
 	<form method="post" action = "<%=request.getContextPath()%>/ActorInfoList.jsp" >
 	<!-- 검색 기능 부분 -->
 	<div>
-		<select name ="search"  value = <%=search%>>
-			<option value ="배우이름">배우이름</option>
-			<option value ="영화정보">영화정보</option>
-		</select>
-	<input type = text name ="keyword">
+	배우이름 검색:
+	<input type = text name ="name" value="<%=name %>">
 	<button type = "submit" class="btn btn-outline-info">검색</button>
 	</div>
 	<!-- 페이지 목록 표시 부분 -->

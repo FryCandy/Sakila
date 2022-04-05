@@ -20,6 +20,10 @@
 		<li><a href="<%=request.getContextPath() %>/salesByFilmCategory.jsp">salesByFilmCategory</a>
 		<li><a href="<%=request.getContextPath() %>/salesByStore.jsp">salesByStore</a>
 		<li><a href="<%=request.getContextPath() %>/staffListView.jsp">staffListView</a>
+		<!-- 프로시저 3개 결과 화면 -->
+		<li><a href="<%=request.getContextPath() %>/filmInStock.jsp">filmInStock</a>
+		<li><a href="<%=request.getContextPath() %>/filmNotInStock.jsp">filmNotInStock</a>
+		<li><a href="<%=request.getContextPath() %>/rewardsReport.jsp">rewardsReport</a>
 	</ol>
 
 </body>
