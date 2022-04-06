@@ -24,10 +24,15 @@
 		System.out.println(price+"<--price");//디버깅
 	}
 	//length
-	int length =0;
-	if(request.getParameter("length")!=null){
-		length = Integer.parseInt(request.getParameter("length"));
-		System.out.println(length+"<--length");//디버깅
+	int minLength =0;
+	if(request.getParameter("minLength")!=null&&!request.getParameter("minLength").equals("")){
+		minLength = Integer.parseInt(request.getParameter("minLength"));
+		System.out.println(minLength+"<--minLength");//디버깅
+	}
+	int maxLength =10000;
+	if(request.getParameter("maxLength")!=null&&!request.getParameter("maxLength").equals("")){
+		maxLength = Integer.parseInt(request.getParameter("maxLength"));
+		System.out.println(maxLength+"<--maxLength");//디버깅
 	}
 	//title
 	String title ="";
@@ -67,9 +72,9 @@
 	//dao 호출
 	FilmDao filmDao = new FilmDao();
 	//검색 후 리스트
-	List<FilmList> filmList = filmDao.selectFilmListSearch(category, rating, price, length, title, actors, beginRow, rowPerPage);
+	List<FilmList> filmList = filmDao.selectFilmListSearch(category, rating, price, minLength,maxLength, title, actors, beginRow, rowPerPage);
 	//검색후 전체 게시물 수
-	int totalRow = filmDao.totalRowFilmListSearch(category, rating, price, length, title, actors);
+	int totalRow = filmDao.totalRowFilmListSearch(category, rating, price, minLength,maxLength, title, actors);
 	System.out.println(totalRow+"<--totalRow");
 	//마지막 페이지
 	lastPage = ((totalRow - 1) / rowPerPage + 1); //마지막 페이지를 구하는 연산식
@@ -85,12 +90,13 @@
 <body class="container">
 	<h1>필름 리스트 뷰 검색 결과</h1>
 	<a href="<%=request.getContextPath()%>/filmSearchForm.jsp" >검색창으로 돌아가기</a>
-	<form method="post" action="<%=request.getContextPath()%>/filmSearchAction.jsp">
+	<form method="get" action="<%=request.getContextPath()%>/filmSearchAction.jsp">
 		<!-- 검색정보 그대로 전달하기 -->
 		<input type="hidden" name ="category" value ="<%=category%>">
 		<input type="hidden" name ="rating" value ="<%=rating%>">
 		<input type="hidden" name ="price" value ="<%=price%>">
-		<input type="hidden" name ="length" value ="<%=length%>">
+		<input type="hidden" name ="minLength" value ="<%=minLength%>">
+		<input type="hidden" name ="maxLength" value ="<%=maxLength%>">
 		<input type="hidden" name ="title" value ="<%=title%>">
 		<input type="hidden" name ="actors" value ="<%=actors%>">
 		<table class="table table-bordered">

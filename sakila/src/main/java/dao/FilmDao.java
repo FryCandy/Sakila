@@ -108,7 +108,7 @@ public class FilmDao {
 		return list;
 	}
 	//filmSearchform에서 호출, 검색 메서드
-	public List<FilmList> selectFilmListSearch(String category,String rating,double price, int length,String title,String actors,int beginRow,int rowPerPage){
+	public List<FilmList> selectFilmListSearch(String category,String rating,double price, int minLength,int maxLength,String title,String actors,int beginRow,int rowPerPage){
 		List<FilmList> list = new ArrayList<FilmList>(); //filmlist값을 넣을 ArrayList
 		//db 자원 준비
 		Connection conn = null;
@@ -132,14 +132,13 @@ public class FilmDao {
 			sql = sql + " AND price = ?";
 			setObject.add(String.valueOf(price));// ?에 pirce를 String으로 변경하여 값 입력
 		}
-		if(length!=-1) {
-			if(length==0) {
-				sql = sql + " AND length < 60";
-			}else if(length==1) {
-				sql =sql + " AND length >= 60";
-			}
-		}
-		sql = sql + " ORDER BY fid limit ?,?"; //마지막으로 orderBY값 입력
+		//length 검색 부분
+			sql = sql + " AND length >= ?";
+			setObject.add(String.valueOf(minLength));// ?에 minLength 값 입력
+			sql = sql + " AND length < ?";
+			setObject.add(String.valueOf(maxLength));// ?에 maxLength 값 입력
+		//마지막으로 orderBY값 입력		
+		sql = sql + " ORDER BY fid limit ?,?"; 
 		System.out.println(String.valueOf(rowPerPage));
 		System.out.println(sql);
 		for(int i =0;i<setObject.size();i=i+1) {
@@ -171,7 +170,7 @@ public class FilmDao {
 		}
 		return list;
 	}
-	public int totalRowFilmListSearch(String category,String rating,double price, int length,String title,String actors){
+	public int totalRowFilmListSearch(String category,String rating,double price, int minLength,int maxLength,String title,String actors){
 		int totalRow = 0;
 		//db 자원 준비
 		Connection conn = null;
@@ -195,13 +194,12 @@ public class FilmDao {
 			sql = sql + " AND price = ?";
 			setObject.add(String.valueOf(price));// ?에 pirce를 String으로 변경하여 값 입력
 		}
-		if(length!=-1) {
-			if(length==0) {
-				sql = sql + " AND length < 60";
-			}else if(length==1) {
-				sql =sql + " AND length >= 60";
-			}
-		}
+		//length 검색 부분
+		sql = sql + " AND length >= ?";
+		setObject.add(String.valueOf(minLength));// ?에 minLength 값 입력
+		sql = sql + " AND length < ?";
+		setObject.add(String.valueOf(maxLength));// ?에 maxLength 값 입력
+		
 		System.out.println(sql);
 		for(int i =0;i<setObject.size();i=i+1) {
 			System.out.println(i);

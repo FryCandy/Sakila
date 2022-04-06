@@ -72,9 +72,8 @@
 			<tr>
 				<td>length</td>
 				<td>
-					<input type="radio" name="length" value="-1" checked="checked"> 선택안함
-					<input type="radio" name="length" value="0"> 1시간미만<!-- <60 -->
-					<input type="radio" name="length" value="1"> 1시간초과<!-- 60>= -->
+					<input type="number" name="minLength" > 분이상
+					<input type="number" name="maxLength"> 분미만
 					
 				</td>
 			</tr>
