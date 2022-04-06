@@ -146,10 +146,7 @@
 					if(filmNotInStockList.size()!=0 && f.getFID()==filmId && filmId !=0){
 				%>		
 						<tr>
-						<td colspan="7">filmNotInstockList</td>
-						<td>
-							<button type ="submit" class="btn btn-light" name="filmId" value="0">닫기</button>
-						</td>
+						<td colspan="8">filmNotInstockList</td>
 				<%		
 						for(Map m : filmNotInStockList){
 				 %>	

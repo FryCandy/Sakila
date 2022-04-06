@@ -24,6 +24,8 @@
 		<li><a href="<%=request.getContextPath() %>/filmInStock.jsp">filmInStock</a>
 		<li><a href="<%=request.getContextPath() %>/filmNotInStock.jsp">filmNotInStock</a>
 		<li><a href="<%=request.getContextPath() %>/rewardsReport.jsp">rewardsReport</a>
+		<!-- filmLIst검색 -->
+		<li><a href="<%=request.getContextPath() %>/filmSearchForm.jsp">filmSearchForm</a>
 	</ol>
 
 </body>

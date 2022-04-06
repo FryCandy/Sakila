@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -11,8 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import util.DBUtil;
-	//film_in_stock 프로시저
+import vo.FilmList;
 public class FilmDao {
+	//film_in_stock 프로시저
 	public Map<String,Object> filmInStockCall(int filmId,int storeId){
 		Map<String,Object> map = new HashMap<String,Object>();
 		
@@ -44,6 +46,7 @@ public class FilmDao {
 		map.put("count", count);
 		return map;
 	}
+	//film_not_in_stock 프로시저
 	public Map<String,Object> filmNotInStockCall(int filmId,int storeId){
 		Map<String,Object> map = new HashMap<String,Object>();
 		
@@ -85,4 +88,159 @@ public class FilmDao {
 			System.out.println(id);
 		}
 	}
+	public List<Double> selectFilmPriceList(){
+		List<Double> list =new ArrayList<Double>();
+		//데이터베이스 자원준비
+				Connection conn =null;
+				PreparedStatement stmt =null;
+				ResultSet rs = null;
+				conn = DBUtil.getConnection();
+				String sql ="SELECT price FROM film_list GROUP BY price";
+				try {
+					stmt = conn.prepareStatement(sql);
+					rs= stmt.executeQuery();
+					while(rs.next()) {
+						list.add(rs.getDouble(1)); //rs.getDouble("price")
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		return list;
+	}
+	//filmSearchform에서 호출, 검색 메서드
+	public List<FilmList> selectFilmListSearch(String category,String rating,double price, int length,String title,String actors,int beginRow,int rowPerPage){
+		List<FilmList> list = new ArrayList<FilmList>(); //filmlist값을 넣을 ArrayList
+		//db 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		conn = DBUtil.getConnection();
+		//검색 쿼리 입력
+			List<String> setObject = new ArrayList<>(); // ? 값 넣을 ArrayList<String>
+		String sql="SELECT * FROM film_list WHERE title LIKE ? AND actors LIKE ?";
+		setObject.add("%"+title+"%"); //title ?에 들어갈 값
+		setObject.add("%"+actors+"%"); //actors ?에 들어갈 값
+		if(!category.equals("")){ // category에 ""이 아니라면
+			sql = sql + " AND category = ?";
+			setObject.add(category);// ?에 category 값 입력
+		}
+		if(!rating.equals("")){//rating 검색
+			sql = sql + " AND rating = ?";
+			setObject.add(rating);// ?에 category 값 입력
+		}
+		if(price!=-1){//price 검색
+			sql = sql + " AND price = ?";
+			setObject.add(String.valueOf(price));// ?에 pirce를 String으로 변경하여 값 입력
+		}
+		if(length!=-1) {
+			if(length==0) {
+				sql = sql + " AND length < 60";
+			}else if(length==1) {
+				sql =sql + " AND length >= 60";
+			}
+		}
+		sql = sql + " ORDER BY fid limit ?,?"; //마지막으로 orderBY값 입력
+		System.out.println(String.valueOf(rowPerPage));
+		System.out.println(sql);
+		for(int i =0;i<setObject.size();i=i+1) {
+			System.out.println(i);
+			System.out.println(setObject.get(i));
+		}
+		try {
+			stmt=conn.prepareStatement(sql);
+		for(int i =0;i<setObject.size();i=i+1) {
+			stmt.setString(i+1, setObject.get(i));
+		}
+			stmt.setInt(setObject.size()+1, beginRow);
+			stmt.setInt(setObject.size()+2, rowPerPage);
+		rs=stmt.executeQuery();
+		while(rs.next()) {
+			FilmList f = new FilmList();
+			f.setFID(rs.getInt("fid"));
+			f.setTitle(rs.getString("title"));
+			f.setDescription(rs.getString("description"));
+			f.setCategory(rs.getString("category"));
+			f.setPrice(rs.getDouble("price"));
+			f.setLength(rs.getInt("length"));
+			f.setRating(rs.getString("rating"));
+			f.setActors(rs.getString("actors"));
+			list.add(f);
+		}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public int totalRowFilmListSearch(String category,String rating,double price, int length,String title,String actors){
+		int totalRow = 0;
+		//db 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		conn = DBUtil.getConnection();
+		//검색 쿼리 입력
+		List<String> setObject = new ArrayList<>(); // ? 값 넣을 ArrayList<String>
+		String sql="SELECT count(*) cnt FROM film_list WHERE title LIKE ? AND actors LIKE ?";
+		setObject.add("%"+title+"%"); //title ?에 들어갈 값
+		setObject.add("%"+actors+"%"); //actors ?에 들어갈 값
+		if(!category.equals("")){ // category에 ""이 아니라면
+			sql = sql + " AND category = ?";
+			setObject.add(category);// ?에 category 값 입력
+		}
+		if(!rating.equals("")){//rating 검색
+			sql = sql + " AND rating = ?";
+			setObject.add(rating);// ?에 category 값 입력
+		}
+		if(price!=-1){//price 검색
+			sql = sql + " AND price = ?";
+			setObject.add(String.valueOf(price));// ?에 pirce를 String으로 변경하여 값 입력
+		}
+		if(length!=-1) {
+			if(length==0) {
+				sql = sql + " AND length < 60";
+			}else if(length==1) {
+				sql =sql + " AND length >= 60";
+			}
+		}
+		System.out.println(sql);
+		for(int i =0;i<setObject.size();i=i+1) {
+			System.out.println(i);
+			System.out.println(setObject.get(i));
+		}
+		try {
+			stmt=conn.prepareStatement(sql);
+			for(int i =0;i<setObject.size();i=i+1) {
+				stmt.setString(i+1, setObject.get(i));
+			}
+			rs=stmt.executeQuery();
+			if(rs.next()) {
+				totalRow = rs.getInt("cnt");
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return totalRow;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
