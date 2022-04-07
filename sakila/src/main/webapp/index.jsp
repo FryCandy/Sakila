@@ -21,11 +21,14 @@
 		<li><a href="<%=request.getContextPath() %>/salesByStore.jsp">salesByStore</a>
 		<li><a href="<%=request.getContextPath() %>/staffListView.jsp">staffListView</a>
 		<!-- 프로시저 3개 결과 화면 -->
+		<h2>프로시저</h2>
 		<li><a href="<%=request.getContextPath() %>/filmInStock.jsp">filmInStock</a>
 		<li><a href="<%=request.getContextPath() %>/filmNotInStock.jsp">filmNotInStock</a>
 		<li><a href="<%=request.getContextPath() %>/rewardsReport.jsp">rewardsReport</a>
-		<!-- filmLIst검색 -->
+		<!-- 상세검색-->
+		<h2>상세검색</h2>
 		<li><a href="<%=request.getContextPath() %>/filmSearchForm.jsp">filmSearchForm</a>
+		<li><a href="<%=request.getContextPath() %>/rentalSearchForm.jsp">rentalSearchForm</a>
 	</ol>
 
 </body>

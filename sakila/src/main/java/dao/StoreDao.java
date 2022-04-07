@@ -72,6 +72,35 @@ public class StoreDao {
 		}
 		return list;
 	}
+	//storeId 요청 메서드
+	public List<Integer> selectStoreIdList() {
+		List<Integer> list = new ArrayList<>(); 
+		//데이터베이스 자원준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {//예외 처리 
+			conn = DBUtil.getConnection();// DBUtil 내에 DB연결 호출
+			
+			String sql = "SELECT store_id storeId FROM store";
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getInt(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {// DB자원 해지
+			try {
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
 
 	//selectStoreList() 테스트 코드 매우중요 --단위테스트
 public static void main(String[] args) {
