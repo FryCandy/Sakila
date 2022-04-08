@@ -124,11 +124,13 @@ public class FilmDao {
 			sql = sql + " AND category = ?";
 			setObject.add(category);// ?에 category 값 입력
 		}
-		if(!rating.equals("")){//rating 검색
+		//rating 검색
+		if(!rating.equals("")) {
 			sql = sql + " AND rating = ?";
-			setObject.add(rating);// ?에 category 값 입력
+			setObject.add(rating);
 		}
-		if(price!=-1){//price 검색
+		//price 검색
+		if(price!=-1){
 			sql = sql + " AND price = ?";
 			setObject.add(String.valueOf(price));// ?에 pirce를 String으로 변경하여 값 입력
 		}
@@ -186,11 +188,13 @@ public class FilmDao {
 			sql = sql + " AND category = ?";
 			setObject.add(category);// ?에 category 값 입력
 		}
-		if(!rating.equals("")){//rating 검색
+		//rating 검색
+		if(!rating.equals("")){
 			sql = sql + " AND rating = ?";
 			setObject.add(rating);// ?에 category 값 입력
 		}
-		if(price!=-1){//price 검색
+		//price 검색
+		if(price!=-1){
 			sql = sql + " AND price = ?";
 			setObject.add(String.valueOf(price));// ?에 pirce를 String으로 변경하여 값 입력
 		}

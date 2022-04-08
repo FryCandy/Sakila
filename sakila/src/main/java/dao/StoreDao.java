@@ -79,10 +79,9 @@ public class StoreDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();// DBUtil 내에 DB연결 호출
+		String sql = "SELECT store_id storeId FROM store";
 		try {//예외 처리 
-			conn = DBUtil.getConnection();// DBUtil 내에 DB연결 호출
-			
-			String sql = "SELECT store_id storeId FROM store";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			while(rs.next()) {

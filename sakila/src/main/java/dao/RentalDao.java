@@ -37,7 +37,7 @@ public class RentalDao {
 					+ "			INNER JOIN film f "
 					+ "			ON f.film_id = i.film_id "
 					+ "WHERE CONCAT(c.first_name,' ',c.last_name) LIKE ? ";
-		//검색쿼리 분기
+		//분기하여 검색 하는 쿼리
 		if(storeId==-1&&beginDate.equals("")&&endDate.equals("")){ // 스토어 ID 체크 안함, 대여 일자 선택 암함
 			sql = sql + " ORDER BY rental_id limit ?,?";
 			stmt= conn.prepareStatement(sql);
