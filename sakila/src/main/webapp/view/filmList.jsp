@@ -93,7 +93,7 @@
 <body class = "container">
 	<h1>FilmList</h1>
 	<a href="<%=request.getContextPath()%>/index.jsp" >index</a>
-	<form method="post" action = "<%=request.getContextPath()%>/filmList.jsp" >
+	<form method="post" action = "<%=request.getContextPath()%>/view/filmList.jsp" >
 	<table class="table table-bordered">
 		<thead>
 			<tr>

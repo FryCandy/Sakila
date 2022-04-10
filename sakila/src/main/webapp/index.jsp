@@ -14,21 +14,21 @@
 		<li class="list-group-item">
 			<h2>테이블 구현</h2>
 			<ol class="list-group">
-				<li><a href="<%=request.getContextPath() %>/storeList.jsp">storeList</a>
-				<li><a href="<%=request.getContextPath() %>/staffList.jsp">staffList</a>
+				<li><a href="<%=request.getContextPath() %>/table/storeList.jsp">storeList</a>
+				<li><a href="<%=request.getContextPath() %>/table/staffList.jsp">staffList</a>
 			</ol>
 		</li>
 		<!-- view 7개 리스트 -->
 		<li class="list-group-item">
 			<h2>뷰 구현</h2>
 			<ol class="list-group">
-				<li><a href="<%=request.getContextPath() %>/ActorInfoList.jsp">ActorInforLIst</a>
-				<li><a href="<%=request.getContextPath() %>/customerList.jsp">customerList</a>
-				<li><a href="<%=request.getContextPath() %>/filmList.jsp">filmList</a>
-				<li><a href="<%=request.getContextPath() %>/nicerButSlowerFilmList.jsp">niceButSlowerFilmList</a>
-				<li><a href="<%=request.getContextPath() %>/salesByFilmCategory.jsp">salesByFilmCategory</a>
-				<li><a href="<%=request.getContextPath() %>/salesByStore.jsp">salesByStore</a>
-				<li><a href="<%=request.getContextPath() %>/staffListView.jsp">staffListView</a>
+				<li><a href="<%=request.getContextPath() %>/view/ActorInfoList.jsp">ActorInforLIst</a>
+				<li><a href="<%=request.getContextPath() %>/view/customerList.jsp">customerList</a>
+				<li><a href="<%=request.getContextPath() %>/view/filmList.jsp">filmList</a>
+				<li><a href="<%=request.getContextPath() %>/view/nicerButSlowerFilmList.jsp">niceButSlowerFilmList</a>
+				<li><a href="<%=request.getContextPath() %>/view/salesByFilmCategory.jsp">salesByFilmCategory</a>
+				<li><a href="<%=request.getContextPath() %>/view/salesByStore.jsp">salesByStore</a>
+				<li><a href="<%=request.getContextPath() %>/view/staffListView.jsp">staffListView</a>
 			</ol>
 		</li>	
 		<!-- 프로시저 3개 결과 화면 -->
