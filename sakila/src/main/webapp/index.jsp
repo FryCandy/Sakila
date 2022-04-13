@@ -14,6 +14,10 @@
 		<li class="list-group-item">
 			<h2>테이블 구현</h2>
 			<ol class="list-group">
+				<li><a href="<%=request.getContextPath() %>/table/filmList.jsp">filmList</a>
+				<li><a href="<%=request.getContextPath() %>/table/actorList.jsp">actorList</a>
+				<li><a href="<%=request.getContextPath() %>/table/rentalList.jsp">rentalList</a>
+				<li><a href="<%=request.getContextPath() %>/table/paymentList.jsp">paymentList</a>
 				<li><a href="<%=request.getContextPath() %>/table/storeList.jsp">storeList</a>
 				<li><a href="<%=request.getContextPath() %>/table/staffList.jsp">staffList</a>
 			</ol>

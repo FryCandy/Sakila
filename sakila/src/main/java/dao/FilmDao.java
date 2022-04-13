@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import util.DBUtil;
+import vo.Film;
 import vo.FilmList;
 public class FilmDao {
 	//film_in_stock 프로시저
@@ -172,6 +173,7 @@ public class FilmDao {
 		}
 		return list;
 	}
+	//filmLIst상세검색 총 행의 수 구하기
 	public int totalRowFilmListSearch(String category,String rating,double price, int minLength,int maxLength,String title,String actors){
 		int totalRow = 0;
 		//db 자원 준비
@@ -220,6 +222,100 @@ public class FilmDao {
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
+		}
+		return totalRow;
+	}
+	
+	//film 테이블 정보 출력
+	public List<Film> selectFilmList(int beginRow, int rowPerPage){
+		List<Film> list = new ArrayList<>();
+		//데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		//DB연결
+		conn = DBUtil.getConnection();
+		//쿼리문 작성
+		String sql = "SELECT film_id filmId,"
+				+ "		 title,"
+				+ "		description,"
+				+ "		release_year releaseYear,"
+				+ "		language_id languageId,"
+				+ "		original_language_id originalLanguageId,"
+				+ "		rental_duration rentalDuration,"
+				+ "		rental_rate rentalRate,"
+				+ "		length,"
+				+ "		replacement_cost replacementCost,"
+				+ "		rating,"
+				+ "		special_features specialFeatures,"
+				+ "		last_update lastUpdate"
+				+ "	FROM film"
+				+ "	LIMIT ?,? ";
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Film f = new Film();
+				f.setFilmId(rs.getInt("filmId"));
+				f.setTitle(rs.getString("title"));
+				f.setDescription(rs.getString("description"));
+				f.setReleaseYear(rs.getString("releaseYear"));
+				f.setLanguageId(rs.getInt("languageId"));
+				f.setOriginalLanguageId(rs.getInt("originalLanguageId"));
+				f.setRentalDuration(rs.getInt("rentalDuration"));
+				f.setRentalRate(rs.getDouble("rentalRate"));
+				f.setLength(rs.getInt("length"));
+				f.setReplacementCost(rs.getDouble("replacementCost"));
+				f.setRating(rs.getString("rating"));
+				f.setSpecialFeatures(rs.getString("specialFeatures"));
+				f.setLastUpdate(rs.getString("lastUpdate"));
+				list.add(f);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				//데이터베이스 자원 반납
+				rs.close();
+				stmt.close();
+				conn.close();
+			}catch (SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	//film 테이블 전체 행의 수 출력
+	public int totalRow (){
+		int totalRow = 0; //전체행이 들어갈 변수 초기화
+		//데이터베이스 자원 준비
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		//DB연결
+		conn = DBUtil.getConnection();
+		//쿼리문 작성
+		String sql = "SELECT count(*) cnt "
+				+ "	FROM film";
+		try {
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				totalRow = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				//데이터베이스 자원 반납
+				rs.close();
+				stmt.close();
+				conn.close();
+			}catch (SQLException e){
+				e.printStackTrace();
+			}
 		}
 		return totalRow;
 	}
